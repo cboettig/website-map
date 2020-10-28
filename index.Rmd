@@ -1,0 +1,44 @@
+---
+title: "Map on a Website"
+author: "Carl"
+date: "10/28/2020"
+output: html_document
+---
+
+```{r setup}
+# install.packages(c("tmap", "raster", "sf"))
+library(tmap)      #interactive maps, raster + vector layers
+library(raster)       #Main raster library
+library(tidyverse)    #our old friend
+library(sf)           #to work with simple features data
+```  
+
+
+
+```{r}
+tmp <- tempfile()
+download.file("https://dsl.richmond.edu/panorama/redlining/static/fullshpfile.zip", tmp)
+unzip(tmp)
+
+tmp <- tempfile()
+download.file("https://data.ca.gov/dataset/e212e397-1277-4df3-8c22-40721b095f33/resource/b0007416-a325-4777-9295-368ea6b710e6/download/ca-county-boundaries.zip", tmp) 
+unzip(tmp)
+```
+
+
+```{r}
+holc <- st_read("fullshpfile/shapefile")
+ndvi_birmingham <- raster("../geospatial-chapman-boettiger/data/NDVI/composite_birmingham.tif")
+
+shp_birmingham <- holc %>% filter(city == "Birmingham") %>% select(holc_grade, geometry)
+```
+
+
+```{r}
+tmap_mode("view")
+tm_shape(shp_birmingham) + 
+    tm_polygons("holc_grade", alpha = 0.3)  + 
+    tm_shape(ndvi_birmingham) +
+    tm_raster(alpha=0.3)
+```
+
