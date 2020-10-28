@@ -5,7 +5,11 @@ date: "10/28/2020"
 output: html_document
 ---
 
-```{r setup}
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+                      warning = FALSE, results = "hide",
+                      cache = TRUE)
+
 # install.packages(c("tmap", "raster", "sf"))
 library(tmap)      #interactive maps, raster + vector layers
 library(raster)       #Main raster library
@@ -34,7 +38,12 @@ shp_birmingham <- holc %>% filter(city == "Birmingham") %>% select(holc_grade, g
 ```
 
 
-```{r}
+# Birmingham Redlining
+
+In August 2020, [Christopher Schell](http://directory.tacoma.uw.edu/employee/cjschell) and collegues published a review in *Science* on ['The ecological and evolutionary consequences of systemic racism in urban environments'](https://science.sciencemag.org/content/early/2020/08/12/science.aay4497) (DOI: 10.1126/science.aay4497), showing how systematic racism and classism  has significant impacts on ecologial and evolutionary processes within urban environments. Here we explore a subset of the data used to support these findings in this review and the broaded literature.
+
+
+```{r results="markup", cache = FALSE}
 tmap_mode("view")
 tm_shape(shp_birmingham) + 
     tm_polygons("holc_grade", alpha = 0.3)  + 
@@ -42,3 +51,8 @@ tm_shape(shp_birmingham) +
     tm_raster(alpha=0.3)
 ```
 
+
+# Another Heading
+
+- list
+- items
